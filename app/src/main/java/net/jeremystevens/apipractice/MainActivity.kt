@@ -3,10 +3,16 @@ package net.jeremystevens.apipractice
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import net.jeremystevens.apipractice.features.FeatureProvider
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+
+    @Inject
+    lateinit var featureProvider: FeatureProvider
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -26,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
