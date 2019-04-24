@@ -1,4 +1,4 @@
-package net.jeremystevens.apipractice.features.coroutine.dagger
+package net.jeremystevens.apipractice.dagger
 
 import android.content.Context
 import dagger.Binds
@@ -7,14 +7,21 @@ import dagger.android.ContributesAndroidInjector
 import net.jeremystevens.apipractice.MainActivity
 import net.jeremystevens.apipractice.features.FeatureProvider
 import net.jeremystevens.apipractice.features.coroutine.CoroutineFeatureProvider
+import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineModule
+import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineScope
+import net.jeremystevens.apipractice.features.coroutine.ui.CoroutineFragment
 import javax.inject.Scope
 
 @Scope
-@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 annotation class MainActivityScope
 
 @Module
 interface MainActivityModule {
+
+    @ContributesAndroidInjector(modules = [(CoroutineModule::class)])
+    @CoroutineScope
+    fun coroutineInjector(): CoroutineFragment
+
     @Binds
     @MainActivityScope
     fun context(mainActivity: MainActivity): Context

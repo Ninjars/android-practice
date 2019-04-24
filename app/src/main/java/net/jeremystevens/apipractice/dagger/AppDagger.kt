@@ -8,8 +8,6 @@ import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import net.jeremystevens.apipractice.MainActivity
 import net.jeremystevens.apipractice.MyApplication
-import net.jeremystevens.apipractice.features.coroutine.dagger.MainActivityModule
-import net.jeremystevens.apipractice.features.coroutine.dagger.MainActivityScope
 import javax.inject.Singleton
 
 @Singleton
@@ -38,5 +36,5 @@ class AppModule {}
 interface ActivitiesModule {
     @ContributesAndroidInjector(modules = [(MainActivityModule::class)])
     @MainActivityScope
-    fun contributeActivityAndroidInjector(): MainActivity
+    fun mainActivityInjector(): MainActivity
 }
