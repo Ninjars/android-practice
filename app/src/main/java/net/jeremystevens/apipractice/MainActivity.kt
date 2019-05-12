@@ -20,6 +20,8 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var featureProvider: FeatureProvider
 
     companion object {
+        // TODO: put these values into the activity save instance state to allow
+        // TODO: activity restoration to also restore fragment states
         const val SAVED_STATE_CONTAINER_KEY = "ContainerKey"
         const val SAVED_STATE_CURRENT_TAB_KEY = "CurrentTabKey"
     }
@@ -51,6 +53,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun createFragment(actionId: Int, key: String) {
+        // TODO: load fragment depending on actionId
         val fragment = featureProvider.getFragment()
         fragment.setInitialSavedState(savedStateSparseArray[actionId])
         supportFragmentManager.beginTransaction()
