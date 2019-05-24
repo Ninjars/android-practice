@@ -22,12 +22,7 @@ class StarWarsModule {
 
     @Provides
     @StarWarsScope
-    fun retrofitService(): SWAPIService {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
-
+    fun retrofitService(client: OkHttpClient): SWAPIService {
         return Retrofit.Builder()
             .baseUrl("https://swapi.co/api/")
             .client(client)
