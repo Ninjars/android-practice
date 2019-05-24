@@ -11,12 +11,13 @@ interface SWContract {
 
     interface Presenter : BasePresenter<View> {
         fun addNewEntry()
+        fun toggleSortMode()
     }
 
     sealed class ViewModel {
         object Loading : ViewModel()
 
-        data class DataModel(val people: List<PersonData>) : ViewModel()
+        data class DataModel(val people: List<PersonData>, val sortMode: SortMode) : ViewModel()
     }
 
     sealed class ErrorModel {
@@ -25,4 +26,6 @@ interface SWContract {
 
         data class NetworkError(val errorCode: Int) : ErrorModel()
     }
+
+    enum class SortMode { ID, ALPHABETICAL }
 }
