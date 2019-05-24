@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.starwars.domain.PersonData
-import timber.log.Timber
 
 class PersonAdapter : RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
 
-    private var data: List<PersonData> = emptyList()
+    private var data: MutableList<PersonData> = ArrayList()
 
     class PersonViewHolder(private val view: ViewGroup) : RecyclerView.ViewHolder(view) {
         fun setData(data: PersonData) {
@@ -33,16 +32,16 @@ class PersonAdapter : RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
     }
 
     fun setDataset(data: List<PersonData>) {
-        Timber.i("setDataset $data")
-//        val diff = DiffUtil.calculateDiff(Differentiator(this.data, data))
-        this.data = data
+        val diff = DiffUtil.calculateDiff(GenericDiffUtilCallback(this.data, data))
 
-//        diff.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        this.data.clear()
+        this.data.addAll(data)
+
+        diff.dispatchUpdatesTo(this)
     }
 }
 
-class Differentiator<T>(private val a: List<T>, private val b: List<T>) : DiffUtil.Callback() {
+class GenericDiffUtilCallback<T>(private val a: List<T>, private val b: List<T>) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return a[oldItemPosition] == b[newItemPosition]
     }
