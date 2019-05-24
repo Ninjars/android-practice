@@ -4,5 +4,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="tab_coroutine">Coroutine</string>
+    <string name="nav_tab_1">SWAPI 1</string>
+    <string name="nav_tab_2">Tab 2</string>
 </resources>

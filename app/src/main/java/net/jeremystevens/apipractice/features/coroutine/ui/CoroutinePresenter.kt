@@ -15,6 +15,10 @@ class CoroutinePresenterImpl @Inject constructor(private val repository: PersonR
     private var currentPersonIndex = 0
     private val people = ArrayList<PersonData>()
 
+    init {
+        Timber.w("new CoroutinePresenterImpl ${hashCode()}")
+    }
+
     override fun attach(view: Coroutine.View) {
         Timber.i("attach")
         this.view = view

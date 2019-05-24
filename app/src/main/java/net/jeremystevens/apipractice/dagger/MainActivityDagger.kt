@@ -5,8 +5,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import net.jeremystevens.apipractice.MainActivity
-import net.jeremystevens.apipractice.features.FeatureProvider
-import net.jeremystevens.apipractice.features.coroutine.CoroutineFeatureProvider
 import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineModule
 import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineScope
 import net.jeremystevens.apipractice.features.coroutine.ui.CoroutineFragment
@@ -25,8 +23,4 @@ interface MainActivityModule {
     @Binds
     @MainActivityScope
     fun context(mainActivity: MainActivity): Context
-
-    @Binds
-    @MainActivityScope
-    fun featureProvider(coroutineFeatureProvider: CoroutineFeatureProvider): FeatureProvider
 }
