@@ -7,9 +7,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class PersonRepository @Inject constructor(private val service: SWAPIService) {
-    init {
-        Timber.w("new PersonRepository ${hashCode()}")
-    }
 
     private var currentPeopleData = PeopleData(Int.MAX_VALUE, 0, emptyMap())
 

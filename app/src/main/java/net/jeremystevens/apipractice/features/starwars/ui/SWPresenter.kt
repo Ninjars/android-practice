@@ -15,10 +15,6 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
     private var currentPersonIndex = 0
     private val people = ArrayList<PersonData>()
 
-    init {
-        Timber.w("new SWPresenterImpl ${hashCode()}")
-    }
-
     override fun attach(view: SWContract.View) {
         Timber.i("attach")
         this.view = view
