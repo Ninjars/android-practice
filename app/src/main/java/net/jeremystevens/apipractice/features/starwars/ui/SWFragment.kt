@@ -68,15 +68,22 @@ class SWFragment : Fragment(), SWContract.View {
     }
 
     override fun showError(model: SWContract.ErrorModel) {
-        when (model) {
-            is SWContract.ErrorModel.NoMoreAvailable ->
-                Toast.makeText(context, "No more entries available", Toast.LENGTH_SHORT).show()
-
-            is SWContract.ErrorModel.FailedToFetch ->
-                Toast.makeText(context, "Failed to fetch new entry", Toast.LENGTH_SHORT).show()
-
+        return when (model) {
             is SWContract.ErrorModel.NetworkError ->
                 Toast.makeText(context, "Network error: ${model.errorCode}", Toast.LENGTH_SHORT).show()
+
+            SWContract.ErrorModel.NoMoreAvailable ->
+                Toast.makeText(context, "No more entries available", Toast.LENGTH_SHORT).show()
+
+            SWContract.ErrorModel.FailedToFetch ->
+                Toast.makeText(context, "Failed to fetch new entry", Toast.LENGTH_SHORT).show()
+
+            SWContract.ErrorModel.NoNetwork ->
+                Toast.makeText(context, "Unable to reach server", Toast.LENGTH_SHORT).show()
+
+            SWContract.ErrorModel.Unknown ->
+                Toast.makeText(context, "Unexpected problem encountered!", Toast.LENGTH_SHORT).show()
+
         }
     }
 }

@@ -5,6 +5,7 @@ import net.jeremystevens.apipractice.features.starwars.domain.PersonRepository
 import net.jeremystevens.apipractice.features.starwars.domain.PersonData
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class SWPresenterImpl @Inject constructor(private val repository: PersonRepository) : SWContract.Presenter {
@@ -56,6 +57,13 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
 
                 } catch (notFoundException: NoSuchElementException) {
                     launchViewError(this, SWContract.ErrorModel.FailedToFetch)
+
+                } catch (noNetwork: UnknownHostException) {
+                    launchViewError(this, SWContract.ErrorModel.NoNetwork)
+
+                } catch (e: Exception) {
+                    Timber.e(e, "unexpected exception getting person at $it")
+                    launchViewError(this, SWContract.ErrorModel.Unknown)
                 }
 
                 displayViewData(this)

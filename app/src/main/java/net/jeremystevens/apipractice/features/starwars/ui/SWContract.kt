@@ -23,6 +23,8 @@ interface SWContract {
     sealed class ErrorModel {
         object NoMoreAvailable : ErrorModel()
         object FailedToFetch : ErrorModel()
+        object NoNetwork : ErrorModel()
+        object Unknown : ErrorModel()
 
         data class NetworkError(val errorCode: Int) : ErrorModel()
     }
