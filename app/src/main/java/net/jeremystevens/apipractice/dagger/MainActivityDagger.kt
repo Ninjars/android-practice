@@ -5,9 +5,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import net.jeremystevens.apipractice.MainActivity
-import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineModule
-import net.jeremystevens.apipractice.features.coroutine.dagger.CoroutineScope
-import net.jeremystevens.apipractice.features.coroutine.ui.CoroutineFragment
+import net.jeremystevens.apipractice.features.starwars.dagger.StarWarsModule
+import net.jeremystevens.apipractice.features.starwars.dagger.StarWarsScope
+import net.jeremystevens.apipractice.features.starwars.ui.SWFragment
 import javax.inject.Scope
 
 @Scope
@@ -16,9 +16,9 @@ annotation class MainActivityScope
 @Module
 interface MainActivityModule {
 
-    @ContributesAndroidInjector(modules = [(CoroutineModule::class)])
-    @CoroutineScope
-    fun coroutineInjector(): CoroutineFragment
+    @ContributesAndroidInjector(modules = [(StarWarsModule::class)])
+    @StarWarsScope
+    fun coroutineInjector(): SWFragment
 
     @Binds
     @MainActivityScope

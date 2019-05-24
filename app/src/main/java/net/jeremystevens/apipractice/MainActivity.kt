@@ -6,7 +6,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import net.jeremystevens.apipractice.features.coroutine.ui.CoroutineFragment
+import net.jeremystevens.apipractice.features.starwars.ui.SWFragment
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -42,8 +42,8 @@ class MainActivity : DaggerAppCompatActivity() {
         navigation.addItems(navItems)
 
         pagerAdapter = BottomBarAdapter(supportFragmentManager)
-        pagerAdapter.addFragment(CoroutineFragment())
-        pagerAdapter.addFragment(CoroutineFragment()) // TODO: different second fragment
+        pagerAdapter.addFragment(SWFragment())
+        pagerAdapter.addFragment(SWFragment()) // TODO: different second fragment
 
         container.setPagingEnabled(false)
         container.adapter = pagerAdapter

@@ -1,4 +1,4 @@
-package net.jeremystevens.apipractice.features.coroutine.ui
+package net.jeremystevens.apipractice.features.starwars.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.jeremystevens.apipractice.R
-import net.jeremystevens.apipractice.features.coroutine.domain.PersonData
+import net.jeremystevens.apipractice.features.starwars.domain.PersonData
 import timber.log.Timber
 
 class PersonAdapter : RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {

@@ -1,7 +1,7 @@
-package net.jeremystevens.apipractice.features.coroutine.domain
+package net.jeremystevens.apipractice.features.starwars.domain
 
-import net.jeremystevens.apipractice.features.coroutine.network.SWAPIService
-import net.jeremystevens.apipractice.features.coroutine.network.PersonResult
+import net.jeremystevens.apipractice.features.starwars.network.SWAPIService
+import net.jeremystevens.apipractice.features.starwars.network.PersonResult
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

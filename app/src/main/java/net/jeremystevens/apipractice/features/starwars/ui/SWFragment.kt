@@ -1,4 +1,4 @@
-package net.jeremystevens.apipractice.features.coroutine.ui
+package net.jeremystevens.apipractice.features.starwars.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -12,10 +12,10 @@ import kotlinx.android.synthetic.main.fragment_coroutine.*
 import net.jeremystevens.apipractice.R
 import javax.inject.Inject
 
-class CoroutineFragment : Fragment(), Coroutine.View {
+class SWFragment : Fragment(), SWContract.View {
 
     @Inject
-    lateinit var presenter: Coroutine.Presenter
+    lateinit var presenter: SWContract.Presenter
 
     private lateinit var adapter: PersonAdapter
 
@@ -43,13 +43,13 @@ class CoroutineFragment : Fragment(), Coroutine.View {
         super.onDestroyView()
     }
 
-    override fun display(model: Coroutine.ViewModel) {
+    override fun display(model: SWContract.ViewModel) {
         when (model) {
-            is Coroutine.ViewModel.Loading -> {
+            is SWContract.ViewModel.Loading -> {
                 addButton.visibility = View.INVISIBLE
                 progressSpinner.visibility = View.VISIBLE
             }
-            is Coroutine.ViewModel.DataModel -> {
+            is SWContract.ViewModel.DataModel -> {
                 addButton.visibility = View.VISIBLE
                 progressSpinner.visibility = View.INVISIBLE
                 adapter.setDataset(model.people)
@@ -57,15 +57,15 @@ class CoroutineFragment : Fragment(), Coroutine.View {
         }
     }
 
-    override fun showError(model: Coroutine.ErrorModel) {
+    override fun showError(model: SWContract.ErrorModel) {
         when (model) {
-            is Coroutine.ErrorModel.NoMoreAvailable ->
+            is SWContract.ErrorModel.NoMoreAvailable ->
                 Toast.makeText(context, "No more entries available", Toast.LENGTH_SHORT).show()
 
-            is Coroutine.ErrorModel.FailedToFetch ->
+            is SWContract.ErrorModel.FailedToFetch ->
                 Toast.makeText(context, "Failed to fetch new entry", Toast.LENGTH_SHORT).show()
 
-            is Coroutine.ErrorModel.NetworkError ->
+            is SWContract.ErrorModel.NetworkError ->
                 Toast.makeText(context, "Network error: ${model.errorCode}", Toast.LENGTH_SHORT).show()
         }
     }

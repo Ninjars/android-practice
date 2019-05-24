@@ -1,12 +1,12 @@
-package net.jeremystevens.apipractice.features.coroutine.dagger
+package net.jeremystevens.apipractice.features.starwars.dagger
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import net.jeremystevens.apipractice.features.coroutine.network.SWAPIService
-import net.jeremystevens.apipractice.features.coroutine.ui.Coroutine
-import net.jeremystevens.apipractice.features.coroutine.ui.CoroutinePresenterImpl
+import net.jeremystevens.apipractice.features.starwars.network.SWAPIService
+import net.jeremystevens.apipractice.features.starwars.ui.SWContract
+import net.jeremystevens.apipractice.features.starwars.ui.SWPresenterImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
@@ -15,13 +15,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 
 @Scope
-annotation class CoroutineScope
+annotation class StarWarsScope
 
-@Module(includes = [CoroutineModule.Internal::class])
-class CoroutineModule {
+@Module(includes = [StarWarsModule.Internal::class])
+class StarWarsModule {
 
     @Provides
-    @CoroutineScope
+    @StarWarsScope
     fun retrofitService(): SWAPIService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -40,7 +40,7 @@ class CoroutineModule {
     @Module
     interface Internal {
         @Binds
-        @CoroutineScope
-        fun presenter(coroutinePresenter: CoroutinePresenterImpl): Coroutine.Presenter
+        @StarWarsScope
+        fun presenter(SWPresenter: SWPresenterImpl): SWContract.Presenter
     }
 }
