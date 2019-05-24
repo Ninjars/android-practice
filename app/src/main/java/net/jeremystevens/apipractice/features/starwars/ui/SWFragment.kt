@@ -11,12 +11,16 @@ import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_coroutine.*
 import net.jeremystevens.apipractice.R
+import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import javax.inject.Inject
 
 class SWFragment : Fragment(), SWContract.View {
 
     @Inject
     lateinit var presenter: SWContract.Presenter
+
+    @Inject
+    lateinit var iconRepository: IconRepository
 
     private lateinit var adapter: PersonAdapter
 
@@ -31,7 +35,7 @@ class SWFragment : Fragment(), SWContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PersonAdapter()
+        adapter = PersonAdapter(iconRepository)
         contentView.adapter = adapter
 
         presenter.attach(this)

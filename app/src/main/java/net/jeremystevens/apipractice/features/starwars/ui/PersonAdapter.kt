@@ -2,25 +2,32 @@ package net.jeremystevens.apipractice.features.starwars.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.jeremystevens.apipractice.R
+import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import net.jeremystevens.apipractice.features.starwars.domain.PersonData
 
-class PersonAdapter : RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
+class PersonAdapter(private val iconRepository: IconRepository) :
+    RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
 
     private var data: MutableList<PersonData> = ArrayList()
 
-    class PersonViewHolder(private val view: ViewGroup) : RecyclerView.ViewHolder(view) {
+    class PersonViewHolder(
+        private val view: ViewGroup,
+        private val iconRepository: IconRepository
+    ) : RecyclerView.ViewHolder(view) {
         fun setData(data: PersonData) {
             view.findViewById<TextView>(R.id.title).text = data.name
+            view.findViewById<ImageView>(R.id.iconView).setImageBitmap(iconRepository.getIcon(data.id))
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_person, parent, false) as ViewGroup
-        return PersonViewHolder(view)
+        return PersonViewHolder(view, iconRepository)
     }
 
     override fun getItemCount(): Int {
