@@ -25,7 +25,14 @@ class PersonRepository @Inject constructor(private val service: SWAPIService) {
         if (index >= currentPeopleData.people.count()) {
             throw NoSuchElementException("unable to find item at index $index")
         }
-        return currentPeopleData.people.toSortedMap().values.toList()[index]
+        return currentPeopleData.people.values.toList()[index]
+    }
+
+    suspend fun getPeopleBatch(currentIndex: Int): List<PersonData> {
+        if (currentIndex >= currentPeopleData.people.size - 1) {
+            fetchNextPeopleBatch()
+        }
+        return currentPeopleData.people.values.toList()
     }
 
     @Throws(HttpException::class)

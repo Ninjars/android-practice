@@ -11,6 +11,7 @@ interface SWContract {
 
     interface Presenter : BasePresenter<View> {
         fun addNewEntry()
+        fun addEntryBatch(): Boolean
         fun toggleSortMode()
     }
 

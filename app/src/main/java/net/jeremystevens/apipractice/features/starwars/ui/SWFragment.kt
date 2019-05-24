@@ -37,6 +37,7 @@ class SWFragment : Fragment(), SWContract.View {
         presenter.attach(this)
 
         addButton.setOnClickListener { presenter.addNewEntry() }
+        addButton.setOnLongClickListener { presenter.addEntryBatch() }
         sortButton.setOnClickListener { presenter.toggleSortMode() }
     }
 

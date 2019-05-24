@@ -49,27 +49,48 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
                 try {
                     people.add(repository.getPerson(it))
 
-                } catch (networkException: HttpException) {
-                    launchViewError(this, SWContract.ErrorModel.NetworkError(networkException.code()))
-
-                } catch (noMoreException: ArrayIndexOutOfBoundsException) {
-                    launchViewError(this, SWContract.ErrorModel.NoMoreAvailable)
-
-                } catch (notFoundException: NoSuchElementException) {
-                    launchViewError(this, SWContract.ErrorModel.FailedToFetch)
-
-                } catch (noNetwork: UnknownHostException) {
-                    launchViewError(this, SWContract.ErrorModel.NoNetwork)
-
                 } catch (e: Exception) {
-                    Timber.e(e, "unexpected exception getting person at $it")
-                    launchViewError(this, SWContract.ErrorModel.Unknown)
-                }
+                    handleException(this, e)
 
-                displayViewData(this)
+                } finally {
+                    displayViewData(this)
+                }
             }
         }
         currentPersonIndex++
+    }
+
+    override fun addEntryBatch(): Boolean {
+        view?.display(SWContract.ViewModel.Loading)
+        GlobalScope.launch {
+            try {
+                val newPeople = repository.getPeopleBatch(currentPersonIndex)
+                currentPersonIndex = newPeople.size
+                people.clear()
+                people.addAll(newPeople)
+
+            } catch (e: Exception) {
+                handleException(this, e)
+
+            } finally {
+                displayViewData(this)
+            }
+        }
+        return true
+    }
+
+    private fun handleException(scope: CoroutineScope, exception: java.lang.Exception) {
+        val errorModel = when (exception) {
+            is HttpException -> SWContract.ErrorModel.NetworkError(exception.code())
+            is ArrayIndexOutOfBoundsException -> SWContract.ErrorModel.NoMoreAvailable
+            is NoSuchElementException -> SWContract.ErrorModel.FailedToFetch
+            is UnknownHostException -> SWContract.ErrorModel.NoNetwork
+            else -> {
+                Timber.e(exception, "unexpected exception getting person")
+                SWContract.ErrorModel.Unknown
+            }
+        }
+        launchViewError(scope, errorModel)
     }
 
     private fun launchViewError(scope: CoroutineScope, error: SWContract.ErrorModel) {
