@@ -1,4 +1,4 @@
-package net.jeremystevens.apipractice.features.starwars.network
+package net.jeremystevens.apipractice.features.swapi.network
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

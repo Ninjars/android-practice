@@ -1,9 +1,9 @@
-package net.jeremystevens.apipractice.features.starwars.ui
+package net.jeremystevens.apipractice.features.swapi.people.ui
 
 import net.jeremystevens.apipractice.BasePresenter
-import net.jeremystevens.apipractice.features.starwars.domain.PersonData
+import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
-interface SWContract {
+object PeopleContract {
     interface View {
         fun display(model: ViewModel)
         fun showError(model: ErrorModel)

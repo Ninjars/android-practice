@@ -1,17 +1,16 @@
-package net.jeremystevens.apipractice.features.starwars.dagger
+package net.jeremystevens.apipractice.features.swapi.dagger
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import net.jeremystevens.apipractice.features.starwars.network.SWAPIService
-import net.jeremystevens.apipractice.features.starwars.ui.SWContract
-import net.jeremystevens.apipractice.features.starwars.ui.SWPresenterImpl
+import net.jeremystevens.apipractice.features.swapi.network.SWAPIService
+import net.jeremystevens.apipractice.features.swapi.people.ui.PeopleContract
+import net.jeremystevens.apipractice.features.swapi.people.ui.PeoplePresenter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 
 
 @Scope
@@ -36,6 +35,6 @@ class StarWarsModule {
     interface Internal {
         @Binds
         @StarWarsScope
-        fun presenter(SWPresenter: SWPresenterImpl): SWContract.Presenter
+        fun presenter(peoplePresenter: PeoplePresenter): PeopleContract.Presenter
     }
 }

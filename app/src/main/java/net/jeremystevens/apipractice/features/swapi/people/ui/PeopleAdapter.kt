@@ -1,4 +1,4 @@
-package net.jeremystevens.apipractice.features.starwars.ui
+package net.jeremystevens.apipractice.features.swapi.people.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
-import net.jeremystevens.apipractice.features.starwars.domain.PersonData
+import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
-class PersonAdapter(private val iconRepository: IconRepository) :
-    RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
+class PeopleAdapter(private val iconRepository: IconRepository) :
+    RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     private var data: MutableList<PersonData> = ArrayList()
 
@@ -46,22 +46,22 @@ class PersonAdapter(private val iconRepository: IconRepository) :
 
         diff.dispatchUpdatesTo(this)
     }
-}
 
-class GenericDiffUtilCallback<T>(private val a: List<T>, private val b: List<T>) : DiffUtil.Callback() {
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return a[oldItemPosition] == b[newItemPosition]
-    }
+    class GenericDiffUtilCallback<T>(private val a: List<T>, private val b: List<T>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return a[oldItemPosition] == b[newItemPosition]
+        }
 
-    override fun getOldListSize(): Int {
-        return a.size
-    }
+        override fun getOldListSize(): Int {
+            return a.size
+        }
 
-    override fun getNewListSize(): Int {
-        return b.size
-    }
+        override fun getNewListSize(): Int {
+            return b.size
+        }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return a[oldItemPosition] == b[newItemPosition]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return a[oldItemPosition] == b[newItemPosition]
+        }
     }
 }

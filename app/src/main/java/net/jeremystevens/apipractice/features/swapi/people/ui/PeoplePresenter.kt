@@ -1,27 +1,27 @@
-package net.jeremystevens.apipractice.features.starwars.ui
+package net.jeremystevens.apipractice.features.swapi.people.ui
 
 import kotlinx.coroutines.*
-import net.jeremystevens.apipractice.features.starwars.domain.PersonRepository
-import net.jeremystevens.apipractice.features.starwars.domain.PersonData
+import net.jeremystevens.apipractice.features.swapi.people.domain.PersonRepository
+import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class SWPresenterImpl @Inject constructor(private val repository: PersonRepository) : SWContract.Presenter {
+class PeoplePresenter @Inject constructor(private val repository: PersonRepository) : PeopleContract.Presenter {
 
-    private var view: SWContract.View? = null
+    private var view: PeopleContract.View? = null
 
     private var runningJob: Job? = null
     private var currentPersonIndex = 0
     private val people = ArrayList<PersonData>()
 
-    private var sortMode = SWContract.SortMode.ID
+    private var sortMode = PeopleContract.SortMode.ID
 
-    override fun attach(view: SWContract.View) {
+    override fun attach(view: PeopleContract.View) {
         Timber.i("attach")
         this.view = view
-        view.display(SWContract.ViewModel.DataModel(people, sortMode))
+        view.display(PeopleContract.ViewModel.DataModel(people, sortMode))
     }
 
     override fun detach() {
@@ -31,10 +31,10 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
     }
 
     override fun toggleSortMode() {
-        view?.display(SWContract.ViewModel.Loading)
+        view?.display(PeopleContract.ViewModel.Loading)
         sortMode = when (sortMode) {
-            SWContract.SortMode.ID -> SWContract.SortMode.ALPHABETICAL
-            SWContract.SortMode.ALPHABETICAL -> SWContract.SortMode.ID
+            PeopleContract.SortMode.ID -> PeopleContract.SortMode.ALPHABETICAL
+            PeopleContract.SortMode.ALPHABETICAL -> PeopleContract.SortMode.ID
         }
         GlobalScope.launch {
             displayViewData(this)
@@ -43,7 +43,7 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
 
     override fun addNewEntry() {
         currentPersonIndex.also {
-            view?.display(SWContract.ViewModel.Loading)
+            view?.display(PeopleContract.ViewModel.Loading)
 
             GlobalScope.launch {
                 try {
@@ -61,7 +61,7 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
     }
 
     override fun addEntryBatch(): Boolean {
-        view?.display(SWContract.ViewModel.Loading)
+        view?.display(PeopleContract.ViewModel.Loading)
         GlobalScope.launch {
             try {
                 val newPeople = repository.getPeopleBatch(currentPersonIndex)
@@ -81,19 +81,19 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
 
     private fun handleException(scope: CoroutineScope, exception: java.lang.Exception) {
         val errorModel = when (exception) {
-            is HttpException -> SWContract.ErrorModel.NetworkError(exception.code())
-            is ArrayIndexOutOfBoundsException -> SWContract.ErrorModel.NoMoreAvailable
-            is NoSuchElementException -> SWContract.ErrorModel.FailedToFetch
-            is UnknownHostException -> SWContract.ErrorModel.NoNetwork
+            is HttpException -> PeopleContract.ErrorModel.NetworkError(exception.code())
+            is ArrayIndexOutOfBoundsException -> PeopleContract.ErrorModel.NoMoreAvailable
+            is NoSuchElementException -> PeopleContract.ErrorModel.FailedToFetch
+            is UnknownHostException -> PeopleContract.ErrorModel.NoNetwork
             else -> {
                 Timber.e(exception, "unexpected exception getting person")
-                SWContract.ErrorModel.Unknown
+                PeopleContract.ErrorModel.Unknown
             }
         }
         launchViewError(scope, errorModel)
     }
 
-    private fun launchViewError(scope: CoroutineScope, error: SWContract.ErrorModel) {
+    private fun launchViewError(scope: CoroutineScope, error: PeopleContract.ErrorModel) {
         scope.launch(Dispatchers.Main) {
             view?.showError(error)
         }
@@ -101,11 +101,11 @@ class SWPresenterImpl @Inject constructor(private val repository: PersonReposito
 
     private fun displayViewData(scope: CoroutineScope) {
         when (sortMode) {
-            SWContract.SortMode.ID -> people.sortBy { it.id }
-            SWContract.SortMode.ALPHABETICAL -> people.sortBy { it.name }
+            PeopleContract.SortMode.ID -> people.sortBy { it.id }
+            PeopleContract.SortMode.ALPHABETICAL -> people.sortBy { it.name }
         }
         scope.launch(Dispatchers.Main) {
-            view?.display(SWContract.ViewModel.DataModel(people, sortMode))
+            view?.display(PeopleContract.ViewModel.DataModel(people, sortMode))
         }
     }
 }

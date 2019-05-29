@@ -6,9 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import net.jeremystevens.apipractice.MainActivity
-import net.jeremystevens.apipractice.features.starwars.dagger.StarWarsModule
-import net.jeremystevens.apipractice.features.starwars.dagger.StarWarsScope
-import net.jeremystevens.apipractice.features.starwars.ui.SWFragment
+import net.jeremystevens.apipractice.features.swapi.dagger.StarWarsModule
+import net.jeremystevens.apipractice.features.swapi.dagger.StarWarsScope
+import net.jeremystevens.apipractice.features.swapi.people.ui.PeopleFragment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Scope
@@ -32,7 +32,7 @@ class MainActivityModule {
     interface Internal {
         @ContributesAndroidInjector(modules = [(StarWarsModule::class)])
         @StarWarsScope
-        fun coroutineInjector(): SWFragment
+        fun coroutineInjector(): PeopleFragment
 
         @Binds
         @MainActivityScope
