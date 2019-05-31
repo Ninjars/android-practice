@@ -14,7 +14,7 @@ import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import javax.inject.Inject
 
-class PeopleFragment : Fragment(), PeopleContract.View {
+class PeopleFragment : Fragment(), PeopleContract.View, PeopleAdapter.HomeworldClickListener {
 
     @Inject
     lateinit var presenter: PeopleContract.Presenter
@@ -35,7 +35,7 @@ class PeopleFragment : Fragment(), PeopleContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PeopleAdapter(iconRepository)
+        adapter = PeopleAdapter(iconRepository, this)
         contentView.adapter = adapter
 
         presenter.attach(this)
@@ -90,5 +90,9 @@ class PeopleFragment : Fragment(), PeopleContract.View {
                 Toast.makeText(context, "Unexpected problem encountered!", Toast.LENGTH_SHORT).show()
 
         }
+    }
+
+    override fun onHomeworldSelected(homeworldId: Int) {
+        // TODO: implement navigation
     }
 }

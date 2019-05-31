@@ -7,6 +7,8 @@ import dagger.Provides
 import net.jeremystevens.apipractice.features.swapi.network.SWAPIService
 import net.jeremystevens.apipractice.features.swapi.people.ui.PeopleContract
 import net.jeremystevens.apipractice.features.swapi.people.ui.PeoplePresenter
+import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetContract
+import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetPresenter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
@@ -35,6 +37,10 @@ class StarWarsModule {
     interface Internal {
         @Binds
         @StarWarsScope
-        fun presenter(peoplePresenter: PeoplePresenter): PeopleContract.Presenter
+        fun peoplePresenter(peoplePresenter: PeoplePresenter): PeopleContract.Presenter
+
+        @Binds
+        @StarWarsScope
+        fun planetPresenter(planetPresenter: PlanetPresenter): PlanetContract.Presenter
     }
 }

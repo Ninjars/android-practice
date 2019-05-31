@@ -11,6 +11,9 @@ interface SWAPIService {
 
     @GET("people/{id}/")
     fun getPerson(@Path("id") id: Int): Deferred<PersonResult>
+
+    @GET("planets/{id}/")
+    fun getPlanet(@Path("id") id: Int): Deferred<PlanetResult>
 }
 
 data class PeopleResult(
@@ -27,6 +30,16 @@ data class PersonResult(
     val films: List<String>,
     val vehicles: List<String>,
     val starships: List<String>
+)
+
+data class PlanetResult(
+        val name: String,
+        val climate: String,
+        val terrain: String,
+        val population: String,
+        val diameter: String,
+        val rotation_period: String,
+        val orbital_period: String
 )
 
 //"name": "Luke Skywalker",

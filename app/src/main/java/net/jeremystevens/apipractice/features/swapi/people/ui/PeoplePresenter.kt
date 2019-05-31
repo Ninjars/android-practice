@@ -45,7 +45,7 @@ class PeoplePresenter @Inject constructor(private val repository: PersonReposito
         currentPersonIndex.also {
             view?.display(PeopleContract.ViewModel.Loading)
 
-            GlobalScope.launch {
+            runningJob = GlobalScope.launch {
                 try {
                     people.add(repository.getPerson(it))
 
@@ -62,7 +62,7 @@ class PeoplePresenter @Inject constructor(private val repository: PersonReposito
 
     override fun addEntryBatch(): Boolean {
         view?.display(PeopleContract.ViewModel.Loading)
-        GlobalScope.launch {
+        runningJob = GlobalScope.launch {
             try {
                 val newPeople = repository.getPeopleBatch(currentPersonIndex)
                 currentPersonIndex = newPeople.size

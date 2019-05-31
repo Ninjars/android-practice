@@ -1,6 +1,7 @@
 package net.jeremystevens.apipractice.features.swapi.people.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,24 +11,32 @@ import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
-class PeopleAdapter(private val iconRepository: IconRepository) :
-    RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
+class PeopleAdapter(private val iconRepository: IconRepository, private val homeworldClickListener: HomeworldClickListener) :
+        RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     private var data: MutableList<PersonData> = ArrayList()
 
     class PersonViewHolder(
-        private val view: ViewGroup,
-        private val iconRepository: IconRepository
+            private val view: ViewGroup,
+            private val iconRepository: IconRepository,
+            private val homeworldClickListener: HomeworldClickListener
     ) : RecyclerView.ViewHolder(view) {
         fun setData(data: PersonData) {
             view.findViewById<TextView>(R.id.title).text = data.name
             view.findViewById<ImageView>(R.id.iconView).setImageBitmap(iconRepository.getIcon(data.id))
+            view.findViewById<View>(R.id.homeworldButton).setOnClickListener {
+                homeworldClickListener.onHomeworldSelected(data.homeworldId)
+            }
         }
+    }
+
+    interface HomeworldClickListener {
+        fun onHomeworldSelected(homeworldId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_person, parent, false) as ViewGroup
-        return PersonViewHolder(view, iconRepository)
+        return PersonViewHolder(view, iconRepository, homeworldClickListener)
     }
 
     override fun getItemCount(): Int {
