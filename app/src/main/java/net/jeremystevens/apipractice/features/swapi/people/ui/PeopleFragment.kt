@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_coroutine.*
+import kotlinx.android.synthetic.main.fragment_starwars_people.*
 import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class PeopleFragment : Fragment(), PeopleContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_coroutine, container, false)
+        return inflater.inflate(R.layout.fragment_starwars_people, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
