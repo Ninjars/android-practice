@@ -2,8 +2,10 @@ package net.jeremystevens.apipractice
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import net.jeremystevens.apipractice.features.ContainerFragment
 
-class BottomBarAdapter(fragmentManager: FragmentManager) : SmartFragmentStatePagerAdapter(fragmentManager) {
+class BottomBarAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
 
     private val fragments = ArrayList<Fragment>()
 
@@ -16,6 +18,6 @@ class BottomBarAdapter(fragmentManager: FragmentManager) : SmartFragmentStatePag
     }
 
     fun addFragment(fragment: Fragment) {
-        fragments.add(fragment)
+        fragments.add(ContainerFragment.newInstance(fragment))
     }
 }

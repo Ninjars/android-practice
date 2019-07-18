@@ -9,6 +9,7 @@ import net.jeremystevens.apipractice.MainActivity
 import net.jeremystevens.apipractice.features.swapi.dagger.StarWarsModule
 import net.jeremystevens.apipractice.features.swapi.dagger.StarWarsScope
 import net.jeremystevens.apipractice.features.swapi.people.ui.PeopleFragment
+import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetFragment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Scope
@@ -27,12 +28,15 @@ class MainActivityModule {
         return OkHttpClient.Builder().addInterceptor(interceptor).build()
     }
 
-
     @Module
     interface Internal {
         @ContributesAndroidInjector(modules = [(StarWarsModule::class)])
         @StarWarsScope
-        fun coroutineInjector(): PeopleFragment
+        fun peopleInjector(): PeopleFragment
+
+        @ContributesAndroidInjector(modules = [(StarWarsModule::class)])
+        @StarWarsScope
+        fun planetInjector(): PlanetFragment
 
         @Binds
         @MainActivityScope

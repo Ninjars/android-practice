@@ -1,11 +1,13 @@
 package net.jeremystevens.apipractice
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import net.jeremystevens.apipractice.features.ContainerFragment
 import net.jeremystevens.apipractice.features.swapi.people.ui.PeopleFragment
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -30,6 +32,17 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(SAVED_STATE_CURRENT_TAB_KEY, navigation.currentItem)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onBackPressed() {
+        if (!(pagerAdapter.getItem(navigation.currentItem) as ContainerFragment).onBackPressed()) {
+            super.onBackPressed()
+        }
+    }
+
+    fun openNewFragment(fragment: Fragment) {
+        val host = pagerAdapter.getItem(navigation.currentItem) as ContainerFragment
+        host.replaceFragment(fragment, true)
     }
 
     private fun setupBottomNavigation() {

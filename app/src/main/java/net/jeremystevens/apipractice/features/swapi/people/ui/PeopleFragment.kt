@@ -12,6 +12,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_starwars_people.*
 import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
+import net.jeremystevens.apipractice.features.swapi.SWNavigator
 import javax.inject.Inject
 
 class PeopleFragment : Fragment(), PeopleContract.View, PeopleEntryClickListener {
@@ -21,6 +22,9 @@ class PeopleFragment : Fragment(), PeopleContract.View, PeopleEntryClickListener
 
     @Inject
     lateinit var iconRepository: IconRepository
+
+    @Inject
+    lateinit var navigator: SWNavigator
 
     private lateinit var adapter: PeopleAdapter
 
@@ -93,7 +97,7 @@ class PeopleFragment : Fragment(), PeopleContract.View, PeopleEntryClickListener
     }
 
     override fun onHomeworldSelected(homeworldId: Int) {
-        // TODO: implement navigation
+        navigator.navigateToPlanet(homeworldId)
     }
 }
 
