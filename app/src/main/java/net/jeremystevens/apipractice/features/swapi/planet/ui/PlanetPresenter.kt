@@ -1,22 +1,21 @@
 package net.jeremystevens.apipractice.features.swapi.planet.ui
 
 import kotlinx.coroutines.*
-import net.jeremystevens.apipractice.features.swapi.network.PlanetResult
-import net.jeremystevens.apipractice.features.swapi.network.SWAPIService
+import net.jeremystevens.apipractice.features.swapi.planet.domain.PlanetRepository
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class PlanetPresenter @Inject constructor(private val service: SWAPIService) : PlanetContract.Presenter {
+class PlanetPresenter @Inject constructor(private val repository: PlanetRepository) : PlanetContract.Presenter {
 
     private var runningJob: Job? = null
     private var view: PlanetContract.View? = null
-    private var planetData: PlanetData? = null
+    private var planetId: Int? = null
 
     override fun attach(view: PlanetContract.View) {
         this.view = view
-        planetData?.run {
+        planetId?.run {
             displayPlanet(this)
         }
     }
@@ -24,37 +23,35 @@ class PlanetPresenter @Inject constructor(private val service: SWAPIService) : P
     override fun detach() {
         runningJob?.apply { cancel() }
         view = null
-        planetData = null
     }
 
     override fun setPlanetId(id: Int) {
-        planetData?.let {
-            if (it.id == id) {
-                displayPlanet(it)
-            } else {
-                downloadPlanetInfo(id)
-            }
-        } ?: downloadPlanetInfo(id)
+        planetId = id
+        displayPlanet(id)
     }
 
-    private fun downloadPlanetInfo(id: Int) {
+    private fun displayPlanet(id: Int) {
+        view?.display(PlanetContract.ViewModel.Loading)
         runningJob = GlobalScope.launch {
-            try {
-                val planetResult = service.getPlanet(id).await()
-                planetData = PlanetData(id, planetResult)
+            val planetData = try {
+                repository.getPlanet(id)
             } catch (e: Exception) {
                 handleException(this, e)
-
-            } finally {
-                planetData?.let {
-                    displayPlanet(it)
+                null
+            }
+            planetData?.let {
+                launch(Dispatchers.Main) {
+                    view?.display(
+                        PlanetContract.ViewModel.DataModel(
+                            planetData.name,
+                            planetData.population,
+                            planetData.climate,
+                            planetData.terrain
+                        )
+                    )
                 }
             }
         }
-    }
-
-    private fun displayPlanet(planetData: PlanetData) {
-        view?.display(PlanetContract.ViewModel.DataModel(planetData.planetResult.name))
     }
 
     private fun handleException(scope: CoroutineScope, exception: java.lang.Exception) {
@@ -74,6 +71,4 @@ class PlanetPresenter @Inject constructor(private val service: SWAPIService) : P
             view?.showError(error)
         }
     }
-
-    private data class PlanetData(val id: Int, val planetResult: PlanetResult)
 }

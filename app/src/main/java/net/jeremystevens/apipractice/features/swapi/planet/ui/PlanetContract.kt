@@ -14,7 +14,12 @@ object PlanetContract {
 
     sealed class ViewModel {
         object Loading: ViewModel()
-        data class DataModel(val name: String) : ViewModel()
+        data class DataModel(
+            val name: String,
+            val population: String,
+            val climate: String,
+            val terrain: String
+        ) : ViewModel()
     }
 
     sealed class ErrorModel {

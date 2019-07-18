@@ -1,37 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
-    <TextView
-        android:id="@+id/titleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_quad"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/planetContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-    <ImageView
-        android:id="@+id/planetView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:importantForAccessibility="no"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toBottomOf="@id/titleView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.5"/>
+        <TextView
+                android:id="@+id/planetName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_quad"
+                android:layout_marginStart="@dimen/margin_quad"
+                android:textSize="@dimen/large_title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+                android:id="@+id/populationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_quad"
+                android:layout_marginStart="@dimen/margin_quad"
+                android:text="@string/sw_population"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/planetName"/>
+
+        <TextView
+                android:id="@+id/climateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_quad"
+                android:layout_marginStart="@dimen/margin_quad"
+                android:text="@string/sw_climate"
+                app:layout_constraintTop_toTopOf="@id/populationTitle"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+                android:id="@+id/terrainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_quad"
+                android:layout_marginStart="@dimen/margin_quad"
+                android:text="@string/sw_terrain"
+                app:layout_constraintTop_toTopOf="@id/climateTitle"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/titleBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="populationTitle, climateTitle, terrainTitle"
+        />
+
+        <TextView
+                android:id="@+id/populationView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="@id/populationTitle"
+                app:layout_constraintStart_toEndOf="@id/titleBarrier"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/climateView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="@id/climateTitle"
+                app:layout_constraintStart_toEndOf="@id/titleBarrier"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/terrainView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="@id/terrainTitle"
+                app:layout_constraintStart_toEndOf="@id/titleBarrier"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <ImageView
+                android:id="@+id/planetView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintTop_toBottomOf="@id/climateView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.5"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
-        android:id="@+id/progressSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/progressSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+            android:id="@+id/errorView"
+            android:layout_margin="@dimen/margin_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+</FrameLayout>

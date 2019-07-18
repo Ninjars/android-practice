@@ -5,4 +5,5 @@
     <dimen name="margin_quad">32dp</dimen>
 
     <dimen name="fab_margin">@dimen/margin_large</dimen>
+    <dimen name="large_title">32sp</dimen>
 </resources>

@@ -7,4 +7,7 @@
     <string name="nav_tab_1">SWAPI 1</string>
     <string name="nav_tab_2">Tab 2</string>
     <string name="homeworld">Homeworld</string>
+    <string name="sw_population">Population:</string>
+    <string name="sw_climate">Climate:</string>
+    <string name="sw_terrain">Terrain:</string>
 </resources>
