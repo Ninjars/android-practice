@@ -14,7 +14,7 @@ import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import javax.inject.Inject
 
-class PeopleFragment : Fragment(), PeopleContract.View, PeopleAdapter.HomeworldClickListener {
+class PeopleFragment : Fragment(), PeopleContract.View, PeopleEntryClickListener {
 
     @Inject
     lateinit var presenter: PeopleContract.Presenter
@@ -95,4 +95,8 @@ class PeopleFragment : Fragment(), PeopleContract.View, PeopleAdapter.HomeworldC
     override fun onHomeworldSelected(homeworldId: Int) {
         // TODO: implement navigation
     }
+}
+
+interface PeopleEntryClickListener {
+    fun onHomeworldSelected(homeworldId: Int)
 }

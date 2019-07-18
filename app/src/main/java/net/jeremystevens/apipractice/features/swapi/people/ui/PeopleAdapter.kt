@@ -13,7 +13,7 @@ import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
 class PeopleAdapter(
     private val iconRepository: IconRepository,
-    private val homeworldClickListener: HomeworldClickListener
+    private val clickListener: PeopleEntryClickListener
 ) : RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     private var data: MutableList<PersonData> = ArrayList()
@@ -21,24 +21,20 @@ class PeopleAdapter(
     class PersonViewHolder(
         private val view: ViewGroup,
         private val iconRepository: IconRepository,
-        private val homeworldClickListener: HomeworldClickListener
+        private val clickListener: PeopleEntryClickListener
     ) : RecyclerView.ViewHolder(view) {
         fun setData(data: PersonData) {
             view.findViewById<TextView>(R.id.title).text = data.name
             view.findViewById<ImageView>(R.id.iconView).setImageBitmap(iconRepository.getIcon(data.id))
             view.findViewById<View>(R.id.homeworldButton).setOnClickListener {
-                homeworldClickListener.onHomeworldSelected(data.homeworldId)
+                clickListener.onHomeworldSelected(data.homeworldId)
             }
         }
     }
 
-    interface HomeworldClickListener {
-        fun onHomeworldSelected(homeworldId: Int)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_person, parent, false) as ViewGroup
-        return PersonViewHolder(view, iconRepository, homeworldClickListener)
+        return PersonViewHolder(view, iconRepository, clickListener)
     }
 
     override fun getItemCount(): Int {
