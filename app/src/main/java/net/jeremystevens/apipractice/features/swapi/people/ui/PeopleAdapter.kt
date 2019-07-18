@@ -11,15 +11,17 @@ import net.jeremystevens.apipractice.R
 import net.jeremystevens.apipractice.features.icongenerator.IconRepository
 import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
-class PeopleAdapter(private val iconRepository: IconRepository, private val homeworldClickListener: HomeworldClickListener) :
-        RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
+class PeopleAdapter(
+    private val iconRepository: IconRepository,
+    private val homeworldClickListener: HomeworldClickListener
+) : RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     private var data: MutableList<PersonData> = ArrayList()
 
     class PersonViewHolder(
-            private val view: ViewGroup,
-            private val iconRepository: IconRepository,
-            private val homeworldClickListener: HomeworldClickListener
+        private val view: ViewGroup,
+        private val iconRepository: IconRepository,
+        private val homeworldClickListener: HomeworldClickListener
     ) : RecyclerView.ViewHolder(view) {
         fun setData(data: PersonData) {
             view.findViewById<TextView>(R.id.title).text = data.name
