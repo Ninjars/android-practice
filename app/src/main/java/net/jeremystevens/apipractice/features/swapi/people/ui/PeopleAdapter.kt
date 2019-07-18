@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.jeremystevens.apipractice.R
-import net.jeremystevens.apipractice.features.icongenerator.IconRepository
+import net.jeremystevens.apipractice.features.swapi.people.domain.IconRepository
 import net.jeremystevens.apipractice.features.swapi.people.domain.PersonData
 
 class PeopleAdapter(

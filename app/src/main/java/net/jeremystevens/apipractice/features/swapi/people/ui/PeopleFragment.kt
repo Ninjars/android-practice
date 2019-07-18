@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_starwars_people.*
 import net.jeremystevens.apipractice.R
-import net.jeremystevens.apipractice.features.icongenerator.IconRepository
+import net.jeremystevens.apipractice.features.swapi.people.domain.IconRepository
 import net.jeremystevens.apipractice.features.swapi.SWNavigator
 import javax.inject.Inject
 

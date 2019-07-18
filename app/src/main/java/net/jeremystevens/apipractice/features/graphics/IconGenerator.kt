@@ -1,14 +1,12 @@
-package net.jeremystevens.apipractice.features.icongenerator
+package net.jeremystevens.apipractice.features.graphics
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.util.SparseArray
-import androidx.core.util.contains
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-class IconRepository @Inject constructor() {
+class IconGenerator @Inject constructor() {
 
     companion object {
         private const val ICON_WIDTH = 8
@@ -16,22 +14,17 @@ class IconRepository @Inject constructor() {
         private const val BITMAP_SCALE = 8
     }
 
-    private val icons = SparseArray<Bitmap>()
-
-    fun getIcon(id: Int): Bitmap {
-        if (icons.contains(id)) return icons.get(id)
-
-        val random = Random(id)
-        val icon = createIcon(random)
+    fun createIcon(random: Random): Bitmap {
+        val colors = generateIconColours(random)
+        val icon = Bitmap.createBitmap(
+            colors, 0,
+            ICON_WIDTH,
+            ICON_WIDTH,
+            ICON_HEIGHT, Bitmap.Config.ARGB_8888
+        )
         val scaledIcon = Bitmap.createScaledBitmap(icon, icon.width * BITMAP_SCALE, icon.height * BITMAP_SCALE, false)
-        icons.put(id, scaledIcon)
         icon.recycle()
         return scaledIcon
-    }
-
-    private fun createIcon(random: Random): Bitmap {
-        val colors = generateIconColours(random)
-        return Bitmap.createBitmap(colors, 0, ICON_WIDTH, ICON_WIDTH, ICON_HEIGHT, Bitmap.Config.ARGB_8888)
     }
 
     // credit to https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/ for algorithm
@@ -54,7 +47,7 @@ class IconRepository @Inject constructor() {
         return pixels
     }
 
-    private fun generateColor(hue: Double, sat: Double, value: Double) : Int {
+    private fun generateColor(hue: Double, sat: Double, value: Double): Int {
         val goldenRationConjugate = 0.618033988749895
         val hueMod = (hue + goldenRationConjugate) % 1
 
