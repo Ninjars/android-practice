@@ -70,6 +70,9 @@ class PlanetGenerator @Inject constructor() {
 
         applyNoise(random, canvas, radius)
 
+        val secondaryHue = generateSecondaryHue(random, primaryHue, planetData.climate)
+        applySecondaryColor(random, canvas, planetData.climate, radius, secondaryHue)
+
         val distance = radius * 0.2f + random.nextFloat() * radius * 0.5f
         val angle = Math.PI * 0.7 + random.nextDouble() * Math.PI * 0.6
         val brightnessMask = createBrightnessMask(distance, angle, radius)
@@ -116,6 +119,7 @@ class PlanetGenerator @Inject constructor() {
             }
         }
         canvas.drawBitmap(noiseBitmap, CENTER - radius, CENTER - radius, paint)
+        noiseBitmap.recycle()
     }
 
     private fun populateNoise(random: Random, size: Int, frequency: Float, array: Array<FloatArray>) {
@@ -132,6 +136,7 @@ class PlanetGenerator @Inject constructor() {
     private fun generatePrimaryHue(random: Random, climate: String): Float {
         val (offset, variance) = when (climate) {
             "temperate" -> Pair(0.33, 0.15)
+            "tropical" -> Pair(0.33, 0.2)
             "arid" -> Pair(0.1, 0.06)
             "polluted" -> Pair(0.8, 0.15)
             else -> Pair(random.nextDouble(), 0.0)
@@ -157,5 +162,54 @@ class PlanetGenerator @Inject constructor() {
 
     private fun valueWithVariance(random: Random, value: Double, variance: Double): Float {
         return ((value - variance) + variance * 2 * random.nextDouble()).toFloat()
+    }
+
+    private fun generateSecondaryHue(random: Random, primaryHue: Float, climate: String): Float {
+        val (offset, variance) = when (climate) {
+            "temperate" -> Pair(0.59f, 0.05)
+            "arid" -> Pair(primaryHue, 0.08)
+            "polluted" -> Pair(primaryHue, 0.1)
+            else -> Pair(random.nextFloat(), 0.0)
+        }
+        return valueWithVariance(random, offset.toDouble(), variance) % 1
+    }
+
+    private fun applySecondaryColor(
+        random: Random,
+        canvas: Canvas,
+        climate: String,
+        radius: Float,
+        secondaryHue: Float
+    ) {
+        val (frequency, threshold) = when (climate) {
+            "temperate" -> Pair(0.01f, 0.6f)
+            "tropical" -> Pair(0.005f, 0.3f)
+            "arid" -> Pair(0.0001f, 0.1f)
+            else -> Pair(0.01f, 0.2f)
+        }
+
+        val size = Math.ceil(radius.toDouble()).toInt() * 2
+        val noiseArray = Array(size) { FloatArray(size) }
+        populateNoise(random, size, frequency, noiseArray)
+
+        val saturation = generateSaturation(random, climate)
+        val value = generateValue(random, climate)
+        val paintColor = Color.HSVToColor(floatArrayOf(secondaryHue * 360, saturation, value))
+
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        for (y in 0 until size) {
+            for (x in 0 until size) {
+                val noiseVal = noiseArray[x][y]
+                bitmap[x, y] = if (noiseVal > threshold) {
+                    Color.TRANSPARENT
+                } else {
+                    paintColor
+                }
+            }
+        }
+
+        val paint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP) }
+        canvas.drawBitmap(bitmap, CENTER - radius, CENTER - radius, paint)
+        bitmap.recycle()
     }
 }
