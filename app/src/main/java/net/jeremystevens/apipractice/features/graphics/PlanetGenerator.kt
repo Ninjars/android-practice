@@ -4,8 +4,10 @@ import android.graphics.*
 import androidx.core.graphics.set
 import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetContract
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 
+@Singleton
 class PlanetGenerator @Inject constructor() {
 
     companion object {

@@ -7,7 +7,9 @@ import androidx.core.util.set
 import net.jeremystevens.apipractice.features.graphics.PlanetGenerator
 import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetContract
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PlanetGraphicsRepository @Inject constructor(
     private val planetGenerator: PlanetGenerator
 ) {

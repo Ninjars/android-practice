@@ -5,8 +5,10 @@ import android.util.SparseArray
 import androidx.core.util.contains
 import net.jeremystevens.apipractice.features.graphics.IconGenerator
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 
+@Singleton
 class IconRepository @Inject constructor(private val iconGenerator: IconGenerator) {
 
     private val icons = SparseArray<Bitmap>()

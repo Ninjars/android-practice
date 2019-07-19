@@ -3,8 +3,10 @@ package net.jeremystevens.apipractice.features.graphics
 import android.graphics.Bitmap
 import net.jeremystevens.apipractice.features.graphics.GraphicsUtils.generateColor
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 
+@Singleton
 class IconGenerator @Inject constructor() {
 
     companion object {
