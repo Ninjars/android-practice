@@ -8,13 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_starwars_planet.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.jeremystevens.apipractice.R
+import net.jeremystevens.apipractice.features.swapi.planet.domain.PlanetGraphicsRepository
 import javax.inject.Inject
 
 class PlanetFragment : Fragment(), PlanetContract.View {
 
     @Inject
     lateinit var presenter: PlanetContract.Presenter
+
+    @Inject
+    lateinit var planetGraphicsRepository: PlanetGraphicsRepository
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -49,11 +57,19 @@ class PlanetFragment : Fragment(), PlanetContract.View {
         progressSpinner.visibility = View.GONE
         errorView.visibility = View.GONE
         planetContainer.visibility = View.VISIBLE
+        planetView.setImageBitmap(planetGraphicsRepository.getDefaultGraphic())
 
         planetName.text = model.name
         populationView.text = model.population
         climateView.text = model.climate
         terrainView.text = model.terrain
+
+        GlobalScope.launch {
+            val planetGraphic = planetGraphicsRepository.getPlanetGraphic(model)
+            withContext(Dispatchers.Main) {
+                planetView.setImageBitmap(planetGraphic)
+            }
+        }
     }
 
     private fun showLoading() {
