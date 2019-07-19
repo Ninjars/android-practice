@@ -3,11 +3,15 @@ package net.jeremystevens.apipractice.dagger
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
+import dagger.Provides
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import net.jeremystevens.apipractice.MainActivity
 import net.jeremystevens.apipractice.MyApplication
+import net.jeremystevens.apipractice.features.swapi.dagger.StarWarsServices
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
 @Singleton
@@ -15,7 +19,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        ActivitiesModule::class
+        ActivitiesModule::class,
+        StarWarsServices::class
     ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {
@@ -30,7 +35,16 @@ interface AppComponent : AndroidInjector<MyApplication> {
 }
 
 @Module
-class AppModule {}
+class AppModule {
+
+    @Provides
+    @Singleton
+    fun okHttpClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder().addInterceptor(interceptor).build()
+    }
+}
 
 @Module
 interface ActivitiesModule {

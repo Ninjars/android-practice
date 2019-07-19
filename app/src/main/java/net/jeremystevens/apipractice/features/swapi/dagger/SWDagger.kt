@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
 import okhttp3.OkHttpClient
+import javax.inject.Singleton
 
 
 @Scope
@@ -20,18 +21,6 @@ annotation class StarWarsScope
 
 @Module(includes = [StarWarsModule.Internal::class])
 class StarWarsModule {
-
-    @Provides
-    @StarWarsScope
-    fun retrofitService(client: OkHttpClient): SWAPIService {
-        return Retrofit.Builder()
-            .baseUrl("https://swapi.co/api/")
-            .client(client)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(SWAPIService::class.java)
-    }
 
     @Module
     interface Internal {
@@ -42,5 +31,21 @@ class StarWarsModule {
         @Binds
         @StarWarsScope
         fun planetPresenter(planetPresenter: PlanetPresenter): PlanetContract.Presenter
+    }
+}
+
+@Module
+class StarWarsServices {
+
+    @Provides
+    @Singleton
+    fun retrofitService(client: OkHttpClient): SWAPIService {
+        return Retrofit.Builder()
+            .baseUrl("https://swapi.co/api/")
+            .client(client)
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SWAPIService::class.java)
     }
 }

@@ -5,7 +5,9 @@ import net.jeremystevens.apipractice.features.swapi.network.PersonResult
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PersonRepository @Inject constructor(private val service: SWAPIService) {
 
     private var currentPeopleData = PeopleData(Int.MAX_VALUE, 0, emptyMap())

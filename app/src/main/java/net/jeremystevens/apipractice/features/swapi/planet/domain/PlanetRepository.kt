@@ -5,7 +5,9 @@ import androidx.core.util.contains
 import androidx.core.util.set
 import net.jeremystevens.apipractice.features.swapi.network.SWAPIService
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PlanetRepository @Inject constructor(private val service: SWAPIService) {
 
     private val planets = SparseArray<PlanetData>()
