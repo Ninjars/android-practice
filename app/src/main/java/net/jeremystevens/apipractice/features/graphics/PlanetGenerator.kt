@@ -1,6 +1,7 @@
 package net.jeremystevens.apipractice.features.graphics
 
 import android.graphics.*
+import androidx.core.graphics.set
 import net.jeremystevens.apipractice.features.swapi.planet.ui.PlanetContract
 import javax.inject.Inject
 import kotlin.random.Random
@@ -54,9 +55,6 @@ class PlanetGenerator @Inject constructor() {
 
         val random = Random(planetData.hashCode())
         val radius = 40 + random.nextFloat() * 60
-        val distance = radius * 0.2f + random.nextFloat() * radius * 0.5f
-        val angle = Math.PI * 0.7 + random.nextDouble() * Math.PI * 0.6
-        val brightnessMask = createBrightnessMask(distance, angle, radius)
 
         val primaryHue = generatePrimaryHue(random, planetData.climate)
         val primarySat = generateSaturation(random, planetData.climate)
@@ -67,6 +65,12 @@ class PlanetGenerator @Inject constructor() {
             color = primeColour
         }
         canvas.drawCircle(CENTER, CENTER, radius, paint)
+
+        applyNoise(random, canvas, radius)
+
+        val distance = radius * 0.2f + random.nextFloat() * radius * 0.5f
+        val angle = Math.PI * 0.7 + random.nextDouble() * Math.PI * 0.6
+        val brightnessMask = createBrightnessMask(distance, angle, radius)
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
         canvas.drawBitmap(brightnessMask, 0f, 0f, paint)
 
@@ -75,6 +79,52 @@ class PlanetGenerator @Inject constructor() {
         bitmap.recycle()
         brightnessMask.recycle()
         return scaledBitmap
+    }
+
+    private fun applyNoise(random: Random, canvas: Canvas, radius: Float) {
+        val size = Math.ceil(radius.toDouble()).toInt() * 2
+        val noiseArray = Array(size) { FloatArray(size) }
+
+        val noiseBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val paint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY) }
+
+        populateNoise(random, size, 0.02f, noiseArray)
+        for (y in 0 until size) {
+            for (x in 0 until size) {
+                noiseBitmap[x, y] =
+                    Color.HSVToColor(floatArrayOf(0f, noiseArray[x][y] * 0.1f, 0.8f + noiseArray[x][y] * 0.2f))
+            }
+        }
+        canvas.drawBitmap(noiseBitmap, CENTER - radius, CENTER - radius, paint)
+
+        populateNoise(random, size, 0.04f, noiseArray)
+        for (y in 0 until size) {
+            for (x in 0 until size) {
+                noiseBitmap[x, y] =
+                    Color.HSVToColor(floatArrayOf(0f, noiseArray[x][y] * 0.02f, 0.92f + noiseArray[x][y] * 0.08f))
+            }
+        }
+        canvas.drawBitmap(noiseBitmap, CENTER - radius, CENTER - radius, paint)
+
+        populateNoise(random, size, 0.6f, noiseArray)
+        for (y in 0 until size) {
+            for (x in 0 until size) {
+                noiseBitmap[x, y] =
+                    Color.HSVToColor(floatArrayOf(0f, noiseArray[x][y] * 0.01f, 0.95f + noiseArray[x][y] * 0.05f))
+            }
+        }
+        canvas.drawBitmap(noiseBitmap, CENTER - radius, CENTER - radius, paint)
+    }
+
+    private fun populateNoise(random: Random, size: Int, frequency: Float, array: Array<FloatArray>) {
+        SimplexNoise.generateSimplexNoise(
+            random.nextInt(256),
+            random.nextInt(256),
+            size,
+            size,
+            frequency,
+            array
+        )
     }
 
     private fun generatePrimaryHue(random: Random, climate: String): Float {
