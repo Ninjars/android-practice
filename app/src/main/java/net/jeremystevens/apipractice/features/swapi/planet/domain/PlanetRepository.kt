@@ -15,7 +15,16 @@ class PlanetRepository @Inject constructor(private val service: SWAPIService) {
     suspend fun getPlanet(id: Int): PlanetData {
         if (planets.contains(id)) return planets.get(id)
         val planet = service.getPlanet(id).await()
-        val data = PlanetData(id, planet.name, planet.population, planet.climate, planet.terrain, planet.diameter, planet.orbital_period, planet.rotation_period)
+        val data = PlanetData(
+            id,
+            planet.name,
+            planet.population,
+            planet.climate,
+            planet.terrain,
+            planet.diameter,
+            planet.orbital_period,
+            planet.rotation_period
+        )
         planets[id] = data
         return data
     }
