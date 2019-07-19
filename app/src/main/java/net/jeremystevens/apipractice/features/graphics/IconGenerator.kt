@@ -1,9 +1,8 @@
 package net.jeremystevens.apipractice.features.graphics
 
 import android.graphics.Bitmap
-import android.graphics.Color
+import net.jeremystevens.apipractice.features.graphics.GraphicsUtils.generateColor
 import javax.inject.Inject
-import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class IconGenerator @Inject constructor() {
@@ -14,7 +13,8 @@ class IconGenerator @Inject constructor() {
         private const val BITMAP_SCALE = 8
     }
 
-    fun createIcon(random: Random): Bitmap {
+    fun createIcon(id: Int): Bitmap {
+        val random = Random(id)
         val colors = generateIconColours(random)
         val icon = Bitmap.createBitmap(
             colors, 0,
@@ -31,7 +31,9 @@ class IconGenerator @Inject constructor() {
     private fun generateIconColours(random: Random): IntArray {
         val primaryHue = random.nextDouble()
         // offset second hue to ensure colours aren't too similar
-        val secondaryHue = (primaryHue + 0.3 + (random.nextDouble() * 0.4)) % 1
+        val colourOffset = 0.2 + (random.nextDouble() * 0.4)
+        val invertFactor = if (random.nextBoolean()) 1 else -1
+        val secondaryHue = (primaryHue + (colourOffset * invertFactor)) % 1
         val color1 = generateColor(primaryHue, 0.5, 0.95)
         val color2 = generateColor(secondaryHue, 0.5, 0.95)
 
@@ -45,27 +47,5 @@ class IconGenerator @Inject constructor() {
             }
         }
         return pixels
-    }
-
-    private fun generateColor(hue: Double, sat: Double, value: Double): Int {
-        val goldenRationConjugate = 0.618033988749895
-        val hueMod = (hue + goldenRationConjugate) % 1
-
-        val hueInt = Math.floor(hueMod * 6).toInt()
-        val factor = hueMod * 6 - hueInt
-
-        val p = value * (1 - sat)
-        val q = value * (1 - factor * sat)
-        val t = value * (1 - (1 - factor) * sat)
-
-        val rgb = when (hueInt) {
-            1 -> arrayOf(q, value, p)
-            2 -> arrayOf(p, value, t)
-            3 -> arrayOf(p, q, value)
-            4 -> arrayOf(t, p, value)
-            5 -> arrayOf(value, p, q)
-            else -> arrayOf(value, t, p)
-        }
-        return Color.argb(255, (rgb[0] * 255).roundToInt(), (rgb[1] * 255).roundToInt(), (rgb[2] * 255).roundToInt())
     }
 }

@@ -14,8 +14,7 @@ class IconRepository @Inject constructor(private val iconGenerator: IconGenerato
     fun getIcon(id: Int): Bitmap {
         if (icons.contains(id)) return icons.get(id)
 
-        val random = Random(id)
-        val icon = iconGenerator.createIcon(random)
+        val icon = iconGenerator.createIcon(id)
         icons.put(id, icon)
         return icon
     }
